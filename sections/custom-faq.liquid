@@ -1,0 +1,119 @@
+<div class="custom-faq"
+    id="faq">
+    <div class="page-width">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        <div class="faqs">
+            {%- for block in section.blocks -%}
+            <div class="faq">
+                <h3 class="faq-question">{{ block.settings.question }}</h3>
+                <div class="faq-answer">{{ block.settings.answer }}</div>
+            </div>
+            {%- endfor -%}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+  {
+    "name": "FAQ",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "FAQ"
+      }
+    ],
+    "blocks": [
+      {
+          "type": "select",
+          "name": "Question and Answer",
+          "settings": [
+            {
+                "type": "text",
+                "id": "question",
+                "label": "Question"
+            },
+            {
+                "type": "textarea",
+                "id": "answer",
+                "label": "Answer"
+            }
+          ]
+      }
+    ],
+    "presets": [
+        {
+        "name": "Custom FAQ",
+        "category": "Advanced layout"
+        }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+    .custom-faq {
+        padding: 30px 0;
+        background-color: #FBFCFF;
+    }
+    .custom-faq .section-title {
+        margin-bottom: 24px;
+        font-size: 32px;
+        line-height:48px;
+    }
+    .custom-faq .faq-question {
+        margin-bottom: 8px;
+        font-size: 16px;
+        line-height: 30px;
+        letter-spacing: -0.3px;
+    }
+    .custom-faq .faq-answer {
+        margin-bottom: 32px;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: -0.3px;
+    }
+    @media (min-width: 768px) {
+        .custom-faq .faqs {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .custom-faq .faq {
+            flex: 0 0 calc(50% - 10px);
+        }
+    }
+    @media (min-width: 1200px) {
+        .custom-faq .faqs {
+            display: flex;
+            justify-content: space-between;
+        }
+        .custom-faq .section-title {
+            margin-bottom: 88px;
+            font-size: 70px;
+            line-height: 88px;
+		}
+        .custom-faq .faq {
+            flex: 0 0 calc(50% - 15px);
+        }
+        .custom-faq .faq-question {
+            margin-bottom: 24px;
+            font-size: 32px;
+            line-height: 44.8px; 
+        }
+        .custom-faq .faq-answer {
+            margin-bottom: 80px;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: -0.5px;
+        }
+    }
+    @media (min-width: 1440px) {
+        .custom-faq .faq {
+            flex: 0 0 calc(50% - 21px);
+        }
+    }
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

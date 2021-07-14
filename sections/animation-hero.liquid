@@ -1,0 +1,266 @@
+<div class="animation-hero">
+    <div class="hero-bg">
+        <picture>
+          <source media="(min-width: 1440px)" src="{{ section.settings.bg.src | img_url: '1920x' }}" srcset="{{ section.settings.bg.src | img_url: 'master', scale: 2 }} 2x" >
+          <source media="(min-width: 768px)" src="{{ section.settings.tablet_bg.src | img_url: '1440x' }}" srcset="{{ section.settings.tablet_bg.src | img_url: 'master', scale: 2 }} 2x">
+          <img src="{{ section.settings.mobile_bg.src | img_url: 'master' }}" srcset="{{ section.settings.mobile_bg.src | img_url: 'master', scale: 2 }} 2x" />
+        </picture>
+    </div>
+    <div class="hero-content page-width">
+        <h1 class="hero-title">
+            <div class="typewrite" 
+                data-period="2000" 
+                data-type="">
+                <span class="wrap"></span>
+            </div>
+          	{{ section.settings.static_heading }}
+        </h1>	
+        {%- if section.settings.text -%}
+            <p class="hero-desc">{{ section.settings.text }}</p>
+        {%- endif -%}
+        <a class="hero-cta" target="_blank" href="{{ section.settings.cta_link }}">
+            {{ section.settings.cta_text }}
+        </a>
+      	<p class="callout-text">{{ section.settings.callout_text }}</p>
+    </div>
+</div>
+{% schema %}
+  {
+    "name": "Animation Hero",
+    "settings": [
+	  {
+		"type": "text",
+		"id": "static_heading",
+		"label": "Static Heading"
+	  },
+      {
+        "type": "textarea",
+        "id": "text",
+        "label": "Description"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg",
+        "label": "Background Image"
+      },
+	  {
+		"type": "image_picker",
+        "id": "tablet_bg",
+        "label": "Tablet Background Image"
+	  },
+      {
+        "type": "image_picker",
+        "id": "mobile_bg",
+        "label": "Mobile Background Image"
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "CTA Text"
+      },
+      {
+        "type": "url",
+        "id": "cta_link",
+        "label": "CTA Link"
+      },
+	  {
+		"type": "text",
+		"id": "callout_text",
+		"label": "Callout Text"
+	  }
+    ],
+    "blocks": [
+      {
+        "type": "animated-texts",
+        "name": "animated_text",
+        "settings": [
+            {
+                "type": "text",
+                "id": "text",
+                "label": "Text"
+            }
+        ]        
+      }
+    ],
+    "presets": [
+      {
+        "name": "Animation Hero",
+        "category": "Advanced layout"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+.animation-hero {
+	position: relative;
+    text-align: center;
+	min-height: 460px;
+    display: flex;
+    justify-content: flex-end; 
+    background: linear-gradient(180deg, #F7F9FB 0%, #fff 100%);
+}
+.animation-hero .hero-bg {
+	margin-top: auto;
+    width: 100%;
+}
+.animation-hero .hero-bg img {
+    width: 100%;
+} 
+.animation-hero .hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	width: 100%;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+.animation-hero .hero-title {
+	font-size: 32px;
+	line-height: 40px;
+}
+.animation-hero .hero-title .typewrite {
+	color: #9947F5;
+} 
+.animation-hero .hero-desc {
+    margin: 24px auto;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.3px;
+}
+.animation-hero .hero-cta {
+    display: inline-block;
+    padding: 16px 32px;
+    background: #9947F5;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500; 
+    line-height: 1;
+    transition: all .3s ease-in-out;
+} 
+.animation-hero .hero-cta:hover {
+	color: #fff;
+	background-color: #7f0fff;
+} 
+.animation-hero .callout-text {
+	margin-top: 12px;
+	color: #7A858F;
+	font-size: 16px;
+	line-height: 24px;
+	letter-spacing: -0.5px;
+} 
+@media (min-width: 768px) {
+	.animation-hero {
+		margin-top: 62px;
+	}
+}  
+@media (min-width: 991px) {
+	.animation-hero {
+		margin-top: 86px;
+		overflow: hidden;
+	}
+} 
+@media (min-width: 1200px) {
+	.animation-hero {
+		height: 670px;
+	}
+    .animation-hero .hero-bg img {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: auto;
+		max-width: none;
+        height: 100%;
+		transform: translateX(-50%);
+	}
+	.animation-hero .hero-title {
+		font-size: 70px;
+		line-height: 88px;
+	}
+	.animation-hero .hero-desc {
+        margin: 32px auto;
+        font-size: 32px;
+        line-height: 48px;
+    } 
+	.animation-hero .hero-content {
+		max-width: 1080px;
+	}
+}
+
+@media (min-width: 1440px) { 
+	.animation-hero {
+		margin-top: 0;
+		height: 800px;
+	}
+}
+ 
+{% endstylesheet %}
+<script>
+    var text_arr = [];  // animation text aray
+</script>
+{%- for block in section.blocks -%}
+<script>
+    text_arr.push("{{ block.settings.text }}");
+</script>
+{%- endfor -%}
+{% javascript %}
+var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 10) || 2000;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 200 - Math.random() * 100;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = text_arr;
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], toRotate, period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 10px solid #9947F5}";
+        document.body.appendChild(css);
+    };
+{% endjavascript %}

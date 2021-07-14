@@ -1,0 +1,291 @@
+<div class="custom-tab"
+    id="custom-tab-{{ section.id }}"
+     style="background-image: url({{ 'tab_mask.png' | asset_img_url: 'master' }})">
+    <div class="page-width">
+        <div class="custom-tab__left">
+            <h2 class="section-title">{{ section.settings.heading }}</h2>
+            <div class="section-text">{{ section.settings.text }}</div>
+            <div class="button-groups">
+            {%- for block in section.blocks -%}
+                {% if block.type == 'button-block' %}
+                    <a href="{{ block.settings.cta_link }}" 
+                        class="cta" 
+                        style="color: {{ block.settings.cta_color }}; border-color: {{ block.settings.cta_color }}"
+                        onMouseOver="this.style.backgroundColor='{{ block.settings.cta_color }}'"
+                        onMouseOut="this.style.backgroundColor='#0000'">
+                        {{ block.settings.cta_text }}
+                    </a>
+                {% endif %}
+            {%- endfor -%}
+            </div>
+        </div>
+        <div class="custom-tab__right">
+            <div class="tab-links">
+            {%- for block in section.blocks -%}
+                {% if block.type == 'tab-block' %}
+                    <a href="#tab-{{ forloop.index }}" class="tab-link">{{ block.settings.tab_text }}</a>
+                {% endif %}
+            {%- endfor -%}
+            </div>
+            <div class="tab-contents">
+            {%- for block in section.blocks -%}
+                {% if block.type == 'tab-block' %}
+                    <div class="tab-content" id="tab-{{ forloop.index }}">
+                        <img src="{{ block.settings.tab_image.src | img_url: '290x' }}"
+                             srcset="{{ block.settings.tab_image.src | img_url: 'master', scale: 2 }} 2x"
+                            alt="{{ block.settings.tab_image.alt | escape }}" />
+                    </div>
+                {% endif %}
+            {%- endfor -%}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Custom Tab",
+    "settings": [
+      {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+      },
+      {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+      }
+    ],
+    "blocks": [
+        {
+            "type": "button-block",
+            "name": "Add Button",
+            "settings": [
+                {
+                    "type": "url",
+                    "id": "cta_link",
+                    "label": "CTA Link"
+                },
+                {
+                    "type": "text",
+                    "id": "cta_text",
+                    "label": "CTA Text"
+                },
+                {
+                    "type": "color",
+                    "id": "cta_color",
+                    "label": "CTA Color"
+                }
+            ]
+        },
+        {
+            "type": "tab-block",
+            "name": "Add Tab",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "tab_text",
+                    "label": "Tab Text"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "tab_image",
+                    "label": "Tab Image"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Custom Tabs",
+            "category": "Advanced layout",
+            "blocks": [
+                {
+                    "type": "button-block"
+                },
+                {
+                    "type": "button-block"
+                },
+                {
+                    "type": "tab-block"
+                },
+                {
+                    "type": "tab-block"
+                }
+            ]
+        }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+    .custom-tab {
+        padding: 40px 0 50px;
+        background: #FBFCFF;
+    }
+    .custom-tab__left {
+        text-align: center;
+    }
+    .custom-tab__right {
+        text-align: center;
+    }
+    .custom-tab .section-title {
+        margin-bottom: 4px;
+        font-size: 32px;
+        line-height: 48px;
+        text-transform: unset;
+    }
+    .custom-tab .section-text {
+        margin-bottom: 24px;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: -0.3px;
+    }
+    .custom-tab .button-groups {
+        margin-bottom: 48px;
+    }
+    .custom-tab .cta {
+		display: inline-block;
+        margin: 0 16px 0 0;
+        padding: 16px 10px;
+		width: 146px;
+        background: #0000;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all .3s ease-in-out;
+		text-align: center;
+		font-size: 16px;
+		line-height: 1;
+    }
+	.custom-tab .cta:last-child {
+		margin-right: 0;
+	}
+    .custom-tab .cta:hover {
+        color: #fff !important;
+    }
+    .custom-tab .tab-links {
+        display: flex;
+        margin-bottom: 24px;
+        align-items: center;
+        justify-content: center;
+    } 
+    .custom-tab .tab-link {
+        margin: 0 16px 0 0;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 1.5;
+        color: #304C65;
+        cursor: pointer;
+        transition: all .3s ease-in-out;
+    }
+	.custom-tab .tab-link span {
+		transition: all .3s ease-in-out;
+	}
+    .custom-tab .tab-link:last-child {
+        margin-right: 0;
+    }
+    .custom-tab .tab-link:first-child.active,
+    .custom-tab .tab-link:first-child:hover {
+        color: #EB4628;
+    }
+	.custom-tab .tab-link:last-child:hover,
+	.custom-tab .tab-link:last-child.active {
+		color: #1F2429;
+	}
+	.custom-tab .tab-link:last-child:hover span,
+	.custom-tab .tab-link:last-child.active span {
+		color: #06C167;
+	}
+    .custom-tab .tab-contents {}
+    .custom-tab .tab-content {
+        display: none;
+		opacity: 0;
+    }
+    .custom-tab .tab-content.active {
+        display: block;
+		animation: tabFadeIn 0.5s ease-in-out 0s forwards;
+    } 
+	@keyframes tabFadeIn {
+		from {
+			opacity: 0;
+		} 
+		to {
+			opacity: 1;
+		}
+	}
+    .custom-tab .tab-content img {
+        box-shadow: 0px 25.2632px 104.842px -43.3329px rgba(2, 23, 44, 0.392155);
+        border-radius: 10px;
+    }
+	@media (max-width: 767px) {
+		.custom-tab {
+			background-size: 0;
+		}	
+	}
+    @media (min-width: 768px) {
+        .custom-tab {
+            padding: 80px 0;
+			background-repeat: no-repeat;
+			background-position: center right;
+        }
+        .custom-tab__left { 
+            text-align: left;
+        }
+        .custom-tab .page-width {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .custom-tab__left {
+            max-width: max(50%, 536px)
+        }
+        .custom-tab .button-groups {
+            margin-bottom: 0;
+        }
+        .custom-tab .tab-link {
+            margin-right: 24px;
+        }
+	    .custom-tab .cta {
+			width: 192px;
+			margin-right: 24px;
+			padding: 16px;
+			font-size: 18px;
+			line-height: 20px;
+		} 
+    }
+    @media (min-width: 1200px) {
+        .custom-tab .section-title {
+            margin-bottom: 40px;
+            font-size: 70px;
+            line-height: 88px;
+        }
+        .custom-tab .section-text {
+            margin-bottom: 40px;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: -0.5px
+        }
+    }
+{% endstylesheet %}
+
+{% javascript %}
+$(document).ready(function () {
+    // Init Tab
+    $('.tab-link:first-child').addClass('active');
+    $('.tab-content:first-child').addClass('active');
+    // Tab function
+    $('.tab-link').on('click', function(e) {
+        e.preventDefault();
+        if ($(this).hasClass('active')) return;
+        let id = $(this).attr('href');
+        $('.tab-link.active').removeClass('active');
+        $('.tab-content.active').removeClass('active');
+        $(this).addClass('active');
+        $(id).addClass('active');
+    }); 
+});
+{% endjavascript %}
